@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { loadFromIndexedDB, saveToIndexedDB } from "../services/dbService";
 import { getSocketProvider } from "../helpers";
+import { mockBlockchainStats } from "../mock";
 
 export const useBlockchainStats = () => {
   const [loading, setLoading] = useState(true);
@@ -61,10 +62,10 @@ export const useBlockchainStats = () => {
       ) {
         const block = await provider.getBlockWithTransactions(blockNumber);
 
-        if (block.transactions.length > 0) {
-          newTransactionsCount += block.transactions.length;
+        if (block && block.transactions?.length > 0) {
+          newTransactionsCount += block?.transactions?.length;
 
-          block.transactions.forEach((tx) => {
+          block.transactions?.forEach((tx) => {
             newGasPriceTotal = newGasPriceTotal.add(
               tx.gasPrice || ethers.BigNumber.from(0)
             );
@@ -76,10 +77,10 @@ export const useBlockchainStats = () => {
 
           // Add each transaction to `transactionData` for 24-hour tracking
           transactionData.push(
-            ...block.transactions.map((tx) => ({
+            ...block.transactions?.map((tx) => ({
               value: tx.value,
               gasPrice: tx.gasPrice,
-              timestamp: Date.now(),
+              timestamp: block.timestamp,
             }))
           );
         }
@@ -121,7 +122,18 @@ export const useBlockchainStats = () => {
       await saveToIndexedDB("txnCost24hVolume", txnCost24hVolume.toString());
     };
 
-    loadDataFromIndexedDB().then(fetchAndCalculateNewBlocks);
+    if (process.env.REACT_APP_PREVIEW) {
+      setCumulativeTxCount(mockBlockchainStats.cumulativeTxCount);
+      setAvgGasPrice(mockBlockchainStats.avgGasPrice);
+      setTxn24hVolume(mockBlockchainStats.txn24hVolume);
+      setTxnCost24hVolume(mockBlockchainStats.txnCost24hVolume);
+      setBlockHeight(mockBlockchainStats.blockHeight);
+      setLoading(false);
+    } else {
+      loadDataFromIndexedDB().then(fetchAndCalculateNewBlocks);
+
+    }
+    
   }, [provider]);
 
   return {

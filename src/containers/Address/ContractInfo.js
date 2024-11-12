@@ -1,7 +1,6 @@
 import React from "react";
 import Tooltip from "../../components/UI/Tooltip";
 import { truncateAddress } from "../../utils";
-import { useContractDetails } from "../../hooks";
 import { BanknotesIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 

@@ -1,9 +1,7 @@
 import React, { useCallback, useState } from "react";
 import AddressContractVerifiedCode from "../AddressContractVerifiedTab/AddressContractVerifiedCode";
 import TabButton from "../../../components/UI/TabButton";
-import Divider from "../../../components/UI/Divider";
 import AddressContractVerifiedReadFunction from "../AddressContractVerifiedTab/AddressContractVerifiedReadFunction";
-import AddressContractVerifiedWriteFunction from "../AddressContractVerifiedTab/AddressContractVerifiedWriteFunction";
 import { CheckBadgeIcon } from "@heroicons/react/24/outline";
 import { useParams } from "react-router-dom";
 import AddressContractWriteFunctionWrapper from "../AddressContractVerifiedTab/AddressContractWriteFunctionWrapper";

@@ -17,54 +17,46 @@ export const useLatestTransactions = (
         setLoading(true);
         const latestBlockNumber = await provider.getBlockNumber();
 
-        let txs = [];
-        let blockPromises = [];
-        let count = 0;
+        let allTransactions = [];
         const transactionsToSkip = (pageNumber - 1) * transactionCount;
+        let blockPromises = [];
+        let blockIndex = 0;
 
-        // Fetch blocks until enough transactions for the page are collected
+        // Fetch enough blocks to fill the transaction list for the current page
         while (
-          txs.length < transactionsToSkip + transactionCount &&
-          count <= latestBlockNumber
+          allTransactions.length < transactionsToSkip + transactionCount &&
+          blockIndex <= latestBlockNumber
         ) {
           blockPromises.push(
-            provider.getBlockWithTransactions(latestBlockNumber - count)
+            provider.getBlockWithTransactions(latestBlockNumber - blockIndex)
           );
-          count++;
+          blockIndex++;
         }
 
         const blocks = await Promise.all(blockPromises);
 
         blocks.forEach((block) => {
-          if (txs.length >= transactionsToSkip + transactionCount) return;
-
+          // Ensure block is not null before accessing transactions
           if (
-            block.transactions.length + txs.length >
-            transactionsToSkip + transactionCount
+            block &&
+            allTransactions.length < transactionsToSkip + transactionCount
           ) {
-            txs.push(
-              ...block.transactions
-                .map((tx) => ({ ...tx, timeStamp: block.timestamp }))
-                .slice(0, transactionsToSkip + transactionCount - txs.length)
-            );
-          } else {
-            txs.push(
-              ...block.transactions.map((tx) => ({
-                ...tx,
-                timeStamp: block.timestamp,
-              }))
-            );
+            const blockTransactions = block.transactions.map((tx) => ({
+              ...tx,
+              timeStamp: block.timestamp,
+            }));
+            allTransactions = allTransactions.concat(blockTransactions);
           }
         });
 
-        // Get only the transactions for the current page
-        const pageTransactions = txs.slice(
+        // Extract only the transactions for the current page
+        const pageTransactions = allTransactions.slice(
           transactionsToSkip,
           transactionsToSkip + transactionCount
         );
         setTransactions(pageTransactions);
       } catch (err) {
-        setError(err.message);
+        setError(`Failed to fetch transactions: ${err.message}`);
       } finally {
         setLoading(false);
       }
@@ -80,17 +72,27 @@ export const useLatestTransactions = (
           newBlockNumber
         );
 
-        // Update transactions with the new block's transactions
-        setTransactions((prevTransactions) => {
-          const updatedTransactions = [
-            ...newBlock.transactions,
-            ...prevTransactions,
-          ];
-          return updatedTransactions.slice(
-            0,
-            Math.min(50, updatedTransactions.length)
-          );
-        });
+        // Ensure newBlock is not null before updating transactions
+        if (newBlock) {
+          setTransactions((prevTransactions) => {
+            // Get new transactions that are not already in prevTransactions
+            const newTransactions = newBlock.transactions
+              .filter(
+                (tx) =>
+                  !prevTransactions.some((prevTx) => prevTx.hash === tx.hash)
+              )
+              .map((tx) => ({
+                ...tx,
+                timeStamp: newBlock.timestamp,
+              }));
+
+            const updatedTransactions = [
+              ...newTransactions,
+              ...prevTransactions,
+            ];
+            return updatedTransactions.slice(0, 50); // Keep only the latest 50 transactions
+          });
+        }
       } catch (err) {
         console.error("Error fetching new block transactions:", err);
       }

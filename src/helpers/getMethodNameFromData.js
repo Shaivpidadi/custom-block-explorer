@@ -16,11 +16,7 @@ const knownSelectors = {
   // ERC-721 Function Selectors
   "0x42842e0e": "safeTransferFrom(address,address,uint256)", // Safely transfer a token
   "0xb88d4fde": "safeTransferFrom(address,address,uint256,bytes)", // Safely transfer a token with data
-  "0x23b872dd": "transferFrom(address,address,uint256)", // Transfer a token from one address to another
-  "0x70a08231": "balanceOf(address)", // Get the token balance of an address
   "0x6352211e": "ownerOf(uint256)", // Get the owner of a specified token ID
-  "0x95d89b41": "symbol()", // Get the symbol of the NFT
-  "0x06fdde03": "name()", // Get the name of the NFT
   "0x5b5e139f": "tokenURI(uint256)", // Get the URI for a token ID
 
   // ERC-1155 Function Selectors

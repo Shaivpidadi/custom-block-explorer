@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Menu, Modal } from "antd";
+import { Layout, Menu } from "antd";
 import { useNavigate, Routes, Route } from "react-router-dom";
 
 import routes from "../routes";

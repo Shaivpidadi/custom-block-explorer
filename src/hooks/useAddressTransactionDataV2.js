@@ -63,6 +63,7 @@ export const useAddressTransactionDataV2 = (address, checkContract = false) => {
       ) {
         const block = await provider.getBlockWithTransactions(blockNumber);
 
+        // eslint-disable-next-line no-loop-func
         block.transactions.forEach((tx) => {
           if (tx.to && tx.to.toLowerCase() === address.toLowerCase()) {
             incomingCount++;
@@ -140,7 +141,7 @@ export const useAddressTransactionDataV2 = (address, checkContract = false) => {
                 const from = `0x${log.topics[1].slice(26)}`;
                 const to = `0x${log.topics[2].slice(26)}`;
                 const tokenIdOrValue = ethers.BigNumber.from(
-                  log.data == "0x" ? 0 : log.data
+                  log.data === "0x" ? 0 : log.data
                 );
 
                 // Determine if it's a token or NFT transfer based on log topic length

@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react";
 
 import TabButton from "../../components/UI/TabButton";
 import AddressTransactionTab from "./AddressTransaction/AddressTransactionTab";
-import InternalTransaction from "../Transaction/InternalTransaction";
 import AddressTokenTransfers from "./AddressTransaction/AddressTokenTransfers";
 import AddressNFTTransfers from "./AddressTransaction/AddressNFTTransfers";
 

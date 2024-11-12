@@ -46,7 +46,7 @@ const AddressContractSection = ({
       setAbi(abi);
     };
     checkIfVerified();
-  }, []);
+  }, [address]);
 
   const onTabButtonClick = (id) => {
     setActiveTab(id);

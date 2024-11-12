@@ -2,7 +2,7 @@ import React from "react";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { BanknotesIcon, Square2StackIcon } from "@heroicons/react/24/solid";
+import { BanknotesIcon } from "@heroicons/react/24/solid";
 
 import { roundUpNumber, truncateAddress } from "../../utils";
 import { ethers } from "ethers";
@@ -46,7 +46,9 @@ const ListCard = ({
             </Link>
           )}
           <div className="text-gray-500">
-            {dayjs().to(dayjs.unix(timeStamp))}
+            {dayjs.unix(timeStamp).isAfter(dayjs())
+              ? dayjs.unix(timeStamp).fromNow()
+              : dayjs().to(dayjs.unix(timeStamp))}
           </div>
         </div>
 

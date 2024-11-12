@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import { ethers } from "ethers";
-import axios from "axios";
 import { getProvider } from "../helpers";
 
 const provider = getProvider();
@@ -18,7 +17,7 @@ export const useAddressData = (address) => {
       if (!address) return;
       setLoading(true);
       const code = await provider.getCode(address);
-      setIsContractAddress(code != "0x");
+      setIsContractAddress(code !== "0x");
       const balance = await provider.getBalance(address);
       setBalance(ethers.utils.formatEther(balance));
 

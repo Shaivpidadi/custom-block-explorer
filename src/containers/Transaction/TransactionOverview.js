@@ -12,7 +12,6 @@ import {
   humanizeString,
   truncateAddress,
 } from "../../utils";
-import CodeBlock from "../../components/UI/CodeBlock";
 
 dayjs.extend(LocalizedFormat);
 dayjs.extend(RelativeTime);
