@@ -142,7 +142,7 @@ const ContractVerificationAdvancedForm = ({
           Constructor Arguments ABI-encoded
         </h2>
         <textarea
-          required
+          // required
           value={constructorArgs}
           onChange={(e) => setConstructorArgs(e.target.value)}
           placeholder="Enter ABI-encoded constructor arguments here..."

@@ -91,6 +91,8 @@ This setup connects the tests to the running Hardhat node for more realistic tes
 - **Tailwind CSS**
 - **Hardhat**
 
+![](https://hit.yhype.me/github/profile?user_id=26166520&repo=https://github.com/Shaivpidadi/custom-block-explorer)
+
 <div align="center">
   <sub>Created by <a href="https://github.com/Shaivpidadi">Shaishav Pidadi</a>.</sub>
 </div>
