@@ -12,6 +12,7 @@ export const useLatestBlocks = (pageNumber = 1, blockCount = 10) => {
     if (process.env.REACT_APP_PREVIEW) {
       setTotalBlocks(mockLatestBlocks.length);
       setBlocks(mockLatestBlocks);
+      setLoading(false);
     } else {
     const provider = getSocketProvider();
 
