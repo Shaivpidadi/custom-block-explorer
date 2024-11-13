@@ -4,7 +4,10 @@ import { useState, useEffect } from "react";
 import { getSocketProvider } from "../helpers"; // Update helper to use WS provider
 import { mockLatestBlocks } from "../mock";
 
-export const useLatestTransactions = (pageNumber = 1, transactionCount = 10) => {
+export const useLatestTransactions = (
+  pageNumber = 1,
+  transactionCount = 10
+) => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,9 +17,12 @@ export const useLatestTransactions = (pageNumber = 1, transactionCount = 10) => 
       try {
         setLoading(true);
 
-        if (process.env.REACT_APP_PREVIEW) {
-          const mockTransactions = mockLatestBlocks.flatMap(block =>
-            block.transactions.map(tx => ({ ...tx, timeStamp: block.timestamp }))
+        if (Boolean(process.env.REACT_APP_PREVIEW)) {
+          const mockTransactions = mockLatestBlocks.flatMap((block) =>
+            block.transactions.map((tx) => ({
+              ...tx,
+              timeStamp: block.timestamp,
+            }))
           );
 
           const transactionsToSkip = (pageNumber - 1) * transactionCount;
@@ -76,16 +82,21 @@ export const useLatestTransactions = (pageNumber = 1, transactionCount = 10) => 
 
     fetchInitialTransactions();
 
-    if (!process.env.REACT_APP_PREVIEW) {
+    if (!Boolean(process.env.REACT_APP_PREVIEW)) {
       const provider = getSocketProvider();
       provider.on("block", async (newBlockNumber) => {
         try {
-          const newBlock = await provider.getBlockWithTransactions(newBlockNumber);
+          const newBlock = await provider.getBlockWithTransactions(
+            newBlockNumber
+          );
 
           if (newBlock) {
             setTransactions((prevTransactions) => {
               const newTransactions = newBlock.transactions
-                .filter((tx) => !prevTransactions.some((prevTx) => prevTx.hash === tx.hash))
+                .filter(
+                  (tx) =>
+                    !prevTransactions.some((prevTx) => prevTx.hash === tx.hash)
+                )
                 .map((tx) => ({
                   ...tx,
                   timeStamp: newBlock.timestamp,
@@ -95,7 +106,7 @@ export const useLatestTransactions = (pageNumber = 1, transactionCount = 10) => 
                 ...newTransactions,
                 ...prevTransactions,
               ];
-              return updatedTransactions.slice(0, 50); 
+              return updatedTransactions.slice(0, 50);
             });
           }
         } catch (err) {

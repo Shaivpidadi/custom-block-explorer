@@ -53,7 +53,9 @@ const NAVBAR = [
 const AppLayout = () => {
   const navigate = useNavigate();
   const { isReady, refreshBlockchainData, loading } = useIsBlockchainReady();
-  const [showPreviewWarning, setShowPreviewWarning] = useState(process.env.REACT_APP_PREVIEW)
+  const [showPreviewWarning, setShowPreviewWarning] = useState(
+    Boolean(process.env.REACT_APP_PREVIEW)
+  );
 
   const handleMenuClick = (item) => {
     navigate(item.key);

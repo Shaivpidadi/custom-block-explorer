@@ -122,7 +122,7 @@ export const useBlockchainStats = () => {
       await saveToIndexedDB("txnCost24hVolume", txnCost24hVolume.toString());
     };
 
-    if (process.env.REACT_APP_PREVIEW) {
+    if (Boolean(process.env.REACT_APP_PREVIEW)) {
       setCumulativeTxCount(mockBlockchainStats.cumulativeTxCount);
       setAvgGasPrice(mockBlockchainStats.avgGasPrice);
       setTxn24hVolume(mockBlockchainStats.txn24hVolume);
@@ -131,9 +131,7 @@ export const useBlockchainStats = () => {
       setLoading(false);
     } else {
       loadDataFromIndexedDB().then(fetchAndCalculateNewBlocks);
-
     }
-    
   }, [provider]);
 
   return {
