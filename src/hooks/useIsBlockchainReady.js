@@ -11,6 +11,10 @@ const useIsBlockchainReady = () => {
   // Function to fetch blockchain data
   const fetchBlockchainData = useCallback(async () => {
     try {
+      if (Boolean(process.env.REACT_APP_PREVIEW)) {
+        setIsReady(true);
+        return;
+      }
       setLoading(true);
       const provider = getProvider();
 

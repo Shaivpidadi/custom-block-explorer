@@ -112,7 +112,7 @@ const Transactions = () => {
       let data = [];
       for (const tx of transactions) {
         const methodName = await getMethodNameFromData(
-          tx.data,
+          tx.data || "0x000",
           tx.to || tx.creates
         );
         data.push({ ...tx, methodName });
