@@ -11,6 +11,7 @@ import { loadABIFromIndexedDB } from "../../services/dbService";
 import { useParams } from "react-router-dom";
 import AddressContractVerified from "./AddressContract/AddressContractVerified";
 import { CheckBadgeIcon } from "@heroicons/react/24/outline";
+import { loadFromSourcify } from "../../services/sourcifyService";
 
 const TABS = [
   { id: 1, label: "Transactions", value: "transaction" },
@@ -41,7 +42,18 @@ const AddressContractSection = ({
 
   useEffect(() => {
     const checkIfVerified = async () => {
-      const abi = await loadABIFromIndexedDB(address);
+      let abi;
+
+      abi = await loadFromSourcify(address);
+      if (abi) {
+        setIsVerified(true);
+        setAbi(abi);
+        return;
+      }
+
+
+
+      abi = await loadABIFromIndexedDB(address);
       setIsVerified(!!abi);
       setAbi(abi);
     };
