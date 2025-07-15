@@ -18,7 +18,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "antd": "^5.21.4",
-    "axios": "^1.7.7",
+    "axios": "^1.8.2",
     "dayjs": "^1.11.13",
     "ethers": "5.8.0",
     "react": "^18.3.1",
