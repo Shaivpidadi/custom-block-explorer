@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Layout, Menu } from "antd";
 import { useNavigate, Routes, Route } from "react-router-dom";
 
@@ -6,7 +6,7 @@ import routes from "../routes";
 import PageNotFound from "../containers/PageContent";
 import FooterComponent from "../components/UI/Footer";
 import useIsBlockchainReady from "../hooks/useIsBlockchainReady";
-import NoNetworkModal from "../components/NoNetworkModal";
+import PreviewOnlyWarningModal from "../components/PreviewOnlyWarningModal";
 
 const { Header, Content, Footer } = Layout;
 
@@ -53,6 +53,9 @@ const NAVBAR = [
 const AppLayout = () => {
   const navigate = useNavigate();
   const { isReady, refreshBlockchainData, loading } = useIsBlockchainReady();
+  const [showPreviewWarning, setShowPreviewWarning] = useState(
+    Boolean(process.env.REACT_APP_PREVIEW)
+  );
 
   const handleMenuClick = (item) => {
     navigate(item.key);
@@ -71,9 +74,9 @@ const AppLayout = () => {
         />
       </Header>
       <Content className="xl:px-50 lg:px-32 md:px-16 sm:px-6 min-h-[calc(100vh-132px)]">
-        <NoNetworkModal
-          open={!loading && !isReady}
-          onOkayClick={refreshBlockchainData}
+        <PreviewOnlyWarningModal
+          open={showPreviewWarning}
+          onOkayClick={() => setShowPreviewWarning(false)}
         />
         <Routes>
           {routes.map(({ path, component }) => (

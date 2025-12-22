@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { loadFromIndexedDB, saveToIndexedDB } from "../services/dbService";
 import { getSocketProvider } from "../helpers";
+import { mockBlockchainStats } from "../mock";
 
 export const useBlockchainStats = () => {
   const [loading, setLoading] = useState(true);
@@ -121,7 +122,16 @@ export const useBlockchainStats = () => {
       await saveToIndexedDB("txnCost24hVolume", txnCost24hVolume.toString());
     };
 
-    loadDataFromIndexedDB().then(fetchAndCalculateNewBlocks);
+    if (Boolean(process.env.REACT_APP_PREVIEW)) {
+      setCumulativeTxCount(mockBlockchainStats.cumulativeTxCount);
+      setAvgGasPrice(mockBlockchainStats.avgGasPrice);
+      setTxn24hVolume(mockBlockchainStats.txn24hVolume);
+      setTxnCost24hVolume(mockBlockchainStats.txnCost24hVolume);
+      setBlockHeight(mockBlockchainStats.blockHeight);
+      setLoading(false);
+    } else {
+      loadDataFromIndexedDB().then(fetchAndCalculateNewBlocks);
+    }
   }, [provider]);
 
   return {
