@@ -37,8 +37,8 @@ Ensure you have the following installed on your machine:
 The app uses environment variables to configure the connection to the blockchain node. To customize, create a `.env` file in the project root with the following variables:
 
 ```env
-REACT_APP_PROVIDER='http://127.0.0.1:8545'   # Fallback for local Hardhat node
-REACT_APP_WS_PROVIDER='ws://localhost:8545'  # WebSocket provider for real-time updates
+VITE_PROVIDER='http://127.0.0.1:8545'   # Fallback for local Hardhat node
+VITE_WS_PROVIDER='ws://localhost:8545'  # WebSocket provider for real-time updates
 ```
 
 ### Running the Application
@@ -56,7 +56,7 @@ REACT_APP_WS_PROVIDER='ws://localhost:8545'  # WebSocket provider for real-time 
    In another terminal window, go to the `block-explorer` project directory and start the React app:
 
    ```bash
-   npm run start
+   npm run dev
    ```
 
    The app should now be accessible at `http://localhost:3000`, with full interaction capabilities on the Hardhat node.
@@ -68,7 +68,7 @@ For simplified setup, the project can be run in Docker.
 1. **Build the Docker image:**
 
    ```bash
-   docker build -t block-explorer      --build-arg REACT_APP_PROVIDER='http://127.0.0.1:8545'      --build-arg REACT_APP_WS_PROVIDER='ws://localhost:8545' .
+   docker build -t block-explorer      --build-arg VITE_PROVIDER='http://127.0.0.1:8545'      --build-arg VITE_WS_PROVIDER='ws://localhost:8545' .
    ```
 
 2. **Run the Docker container:**

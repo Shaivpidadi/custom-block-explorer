@@ -14,7 +14,7 @@ export const useParityTraceTransaction = (txHash) => {
 
     try {
       // @TODO: CHANGE PROVIDER
-      const response = await axios.post(process.env.REACT_APP_PROVIDER, {
+      const response = await axios.post(import.meta.env.VITE_PROVIDER, {
         jsonrpc: "2.0",
         method: "trace_transaction",
         params: [txHash, {}],

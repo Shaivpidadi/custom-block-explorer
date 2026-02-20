@@ -13,7 +13,7 @@ export const useTransactionTrace = (txHash) => {
     setError(null);
 
     try {
-      const response = await axios.post(process.env.REACT_APP_PROVIDER, {
+      const response = await axios.post(import.meta.env.VITE_PROVIDER, {
         jsonrpc: "2.0",
         method: "debug_traceTransaction",
         params: [txHash, {}],

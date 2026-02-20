@@ -86,8 +86,15 @@ export async function getMethodNameFromData(data, contractAddress) {
     }
   }
 
-  // If not found anywhere, return "-"
+  // If not found anywhere, return null
   return null;
+}
+
+// Get method name from data using only known selectors (no ABI/IndexedDB)
+export function getMethodNameFromDataWithoutABI(data) {
+  if (!data || typeof data !== "string") return null;
+  const functionSelector = data.slice(0, 10);
+  return knownSelectors[functionSelector] ?? null;
 }
 
 // // Using this function in a component to get method names

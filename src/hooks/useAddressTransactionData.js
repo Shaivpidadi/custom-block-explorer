@@ -23,7 +23,7 @@ export const useAddressTransactionData = (
       // Fetch latest block number
       const latestBlockNumber = await provider.getBlockNumber();
 
-      const response = await axios.post(process.env.REACT_APP_PROVIDER, {
+      const response = await axios.post(import.meta.env.VITE_PROVIDER, {
         jsonrpc: "2.0",
         method: "eth_getLogs",
         params: [
